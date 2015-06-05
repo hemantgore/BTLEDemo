@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface FirstViewController : UIViewController
+#import "BLEBaseViewController.h"
+#import "BLECentralManager.h"
+@interface FirstViewController : BLEBaseViewController<CBPeripheralDelegate>
 
 
 @end

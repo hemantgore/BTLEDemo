@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1F8C6FB4E660C59C3B5D174A /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FBC9F5516D44CD206105426 /* libPods.a */; };
+		2C26658D1B223D9400A8384B /* BLEBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C26658C1B223D9400A8384B /* BLEBaseViewController.m */; };
 		B15726C51B217D0F0090C3B9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B15726C41B217D0F0090C3B9 /* main.m */; };
 		B15726C81B217D0F0090C3B9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B15726C71B217D0F0090C3B9 /* AppDelegate.m */; };
 		B15726CB1B217D0F0090C3B9 /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B15726CA1B217D0F0090C3B9 /* FirstViewController.m */; };
@@ -33,6 +34,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2C26658B1B223D9300A8384B /* BLEBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLEBaseViewController.h; sourceTree = "<group>"; };
+		2C26658C1B223D9400A8384B /* BLEBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLEBaseViewController.m; sourceTree = "<group>"; };
 		3D0A35AA8CCCD64BBF3EB892 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		7FBC9F5516D44CD206105426 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B15726BF1B217D0F0090C3B9 /* BLEDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BLEDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -117,6 +120,8 @@
 				B15726EB1B21A9E20090C3B9 /* CentralManager */,
 				B15726C61B217D0F0090C3B9 /* AppDelegate.h */,
 				B15726C71B217D0F0090C3B9 /* AppDelegate.m */,
+				2C26658B1B223D9300A8384B /* BLEBaseViewController.h */,
+				2C26658C1B223D9400A8384B /* BLEBaseViewController.m */,
 				B15726C91B217D0F0090C3B9 /* FirstViewController.h */,
 				B15726CA1B217D0F0090C3B9 /* FirstViewController.m */,
 				B15726CC1B217D0F0090C3B9 /* SecondViewController.h */,
@@ -330,6 +335,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B15726FA1B21DB760090C3B9 /* BLEPeripheralTag.m in Sources */,
+				2C26658D1B223D9400A8384B /* BLEBaseViewController.m in Sources */,
 				B15726F61B21B8AE0090C3B9 /* BLEDeviceInfoService.m in Sources */,
 				B15726CE1B217D0F0090C3B9 /* SecondViewController.m in Sources */,
 				B15726C81B217D0F0090C3B9 /* AppDelegate.m in Sources */,
