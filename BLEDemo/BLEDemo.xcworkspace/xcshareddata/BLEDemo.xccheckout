@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>AE00B1EB-76F8-4A8E-A129-CEA0B6B660AC</string>
+	<key>IDESourceControlProjectName</key>
+	<string>BLEDemo</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>98EB856EBEB88426BB5B4EF7F2968BCBA58B7A3A</key>
+		<string>https://github.com/hemantgore/BTLEDemo.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>BLEDemo/BLEDemo.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>98EB856EBEB88426BB5B4EF7F2968BCBA58B7A3A</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/hemantgore/BTLEDemo.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>98EB856EBEB88426BB5B4EF7F2968BCBA58B7A3A</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>98EB856EBEB88426BB5B4EF7F2968BCBA58B7A3A</string>
+			<key>IDESourceControlWCCName</key>
+			<string>BTLEDemo</string>
+		</dict>
+	</array>
+</dict>
+</plist>
