@@ -9,8 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "BLEBaseViewController.h"
 #import "BLECentralManager.h"
-@interface FirstViewController : BLEBaseViewController<CBPeripheralDelegate>
+@interface FirstViewController : BLEBaseViewController<CBPeripheralDelegate,UITableViewDelegate,UITableViewDataSource>
 
-
+@property(nonatomic,strong) IBOutlet UIButton *scanButton;
+@property(nonatomic,strong) IBOutlet UITableView *peripheralTable;
+-(IBAction) scanButtonAction:(id)sender;
 @end
 

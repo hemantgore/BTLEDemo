@@ -8,11 +8,15 @@
 
 #import "FirstViewController.h"
 #import "BLEPeripheralTag.h"
+#import "YMSCBService.h"
+#import "YMSCBCharacteristic.h"
+#import "YMSCBDescriptor.h"
 @interface FirstViewController ()
 
 @end
 
 @implementation FirstViewController
+@synthesize scanButton,peripheralTable;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -22,7 +26,7 @@
                      forKeyPath:@"isScanning"
                         options:NSKeyValueObservingOptionNew
                         context:NULL];
-    [self scanButtonAction:nil];
+//    [self scanButtonAction:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -36,20 +40,21 @@
     if (object == centralManager) {
         if ([keyPath isEqualToString:@"isScanning"]) {
             if (centralManager.isScanning) {
-//                self.scanButton.title = @"Stop Scanning";
+                [self.scanButton setTitle:@"Stop Scanning" forState:UIControlStateNormal];
             } else {
-//                self.scanButton.title = @"Start Scan";
+                [self.scanButton setTitle:@"Start Scan" forState:UIControlStateNormal];
             }
         }
     }
 }
 
-- (void)scanButtonAction:(id)sender {
+- (IBAction)scanButtonAction:(id)sender {
     BLECentralManager *centralManager = [BLECentralManager sharedService];
     
     if (centralManager.isScanning == NO) {
         [centralManager startScan];
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+         [NSTimer scheduledTimerWithTimeInterval:(float)5.0 target:self selector:@selector(scanTimer:) userInfo:nil repeats:NO];
     }
     else {
         [centralManager stopScan];
@@ -64,6 +69,14 @@
 //        }
         
     }
+}
+- (void)scanTimer:(NSTimer *)timer
+{
+     BLECentralManager *centralManager = [BLECentralManager sharedService];
+    [centralManager stopScan];
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    NSLog(@"ymsPeripherals::%@",centralManager.ymsPeripherals);
+    [self.peripheralTable reloadData];
 }
 
 #pragma mark - CBCentralManagerDelegate Methods
@@ -159,7 +172,7 @@
         }
     }
     
-//    [self.peripheralsTableView reloadData];
+    [self.peripheralTable reloadData];
     
 }
 
@@ -202,5 +215,76 @@
     NSArray *args = @[peripheral];
     [self performSelector:@selector(performUpdateRSSI:) withObject:args afterDelay:yp.rssiPingPeriod];
 }
+#pragma mark - UITableViewDelegate and UITableViewDataSource methods
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+    
+}
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+     BLECentralManager *centralManager = [BLECentralManager sharedService];
+    return [centralManager.ymsPeripherals count];
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    CGFloat result;
+    result = 80.0;
+    return result;
+}
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *cellIdentifier = @"peripheralCell";
+    UITableViewCell *pcell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    BLECentralManager *centralManager = [BLECentralManager sharedService];
+     YMSCBPeripheral *yp = [centralManager peripheralAtIndex:indexPath.row];
+    UILabel *name = (UILabel*)[pcell viewWithTag:100];
+    name.text= yp.name;
+    
+    UILabel *pID = (UILabel*)[pcell viewWithTag:101];
+    pID.text= [NSString stringWithFormat:@"Connected:%d",yp.isConnected];
+    
+    return pcell;
+}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    BLECentralManager *centralManager = [BLECentralManager sharedService];
+    YMSCBPeripheral *yp = [centralManager peripheralAtIndex:indexPath.row];
+    NSLog(@"Connecting to peripheral with UUID : %@", yp.cbPeripheral.identifier.UUIDString);
+    [yp connectWithOptions:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES] forKey:CBConnectPeripheralOptionNotifyOnDisconnectionKey] withBlock:^(YMSCBPeripheral *yp, NSError *error) {
+        if(!error){
+            NSLog(@"connected");
+            [yp discoverServices:[yp services] withBlock:^(NSArray *yservices, NSError *error) {
+                if (error) {
+                    NSLog(@"Error in services");
+                }else{
+                    NSLog(@"services discovered");
+//                     for (YMSCBService *service in yservices) {
+//                         __weak YMSCBService *thisService = (YMSCBService *)service;
+//                         
+//                         [service discoverCharacteristics:[service characteristics] withBlock:^(NSDictionary *chDict, NSError *error) {
+//                             if (error) {
+//                                NSLog(@"discoverCharacteristics error::%@",error);
+//                             }else{
+//                                 for (NSString *key in chDict) {
+//                                     YMSCBCharacteristic *ct = chDict[key];
+//                                     //NSLog(@"%@ %@ %@", ct, ct.cbCharacteristic, ct.uuid);
+//                                     
+//                                     [ct discoverDescriptorsWithBlock:^(NSArray *ydescriptors, NSError *error) {
+//                                         if (error) {
+//                                             NSLog(@"discoverDescriptorsWithBlock error::%@",error);
+//                                         }
+//                                         for (YMSCBDescriptor *yd in ydescriptors) {
+//                                             NSLog(@"Descriptor: %@ %@ %@", thisService.name, yd.UUID, yd.cbDescriptor);
+//                                         }
+//                                     }];
+//                                 }
+//                             }
+//                         }];
+//                     }
+                }
+                
+            }];
+        }else{
+            NSLog(@"Not connected");
+        }
+    }];
+}
 @end
