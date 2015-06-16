@@ -11,6 +11,11 @@
 #import "YMSCBService.h"
 #import "YMSCBCharacteristic.h"
 #import "YMSCBDescriptor.h"
+//BlueCreation,  BC127 chip
+//#define BLE_SERVICE_UUID                         "BC2F4CC6-AAEF-4351-9034-D66268E328F0"
+//#define BLE_CHAR_TX_UUID                         "06D1E5E7-79AD-4A71-8FAA-373789F7D93C"
+//#define BLE_CHAR_RX_UUID                         "06D1E5E7-79AD-4A71-8FAA-373789F7D93C"
+
 @interface FirstViewController ()
 
 @end
@@ -244,6 +249,13 @@
     
     return pcell;
 }
+-(int) decimalIntoHex:(char) number
+{
+    char ge  =number/10*16;
+    char shi =number%10;
+    int total =ge +shi;
+    return total;
+}
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     BLECentralManager *centralManager = [BLECentralManager sharedService];
     YMSCBPeripheral *yp = [centralManager peripheralAtIndex:indexPath.row];
@@ -256,6 +268,36 @@
                     NSLog(@"Error in services");
                 }else{
                     NSLog(@"services discovered");
+                    /*
+                     4.3.1 System Message Format
+                     MSGID|MSGTYP|NODEID|VCSID|CMDTYP||CMD||CMDPKT|PRI|TIMSTMP
+                     */
+                    uint8_t send[20];
+                    send[0]=[self decimalIntoHex:1];
+                    send[1]=0xB0;//MSG Type-0xB0:Sys, 0xB1:HW,0xB2:info, 0xB3:ACT
+                    send[2]=0x00;//5 bit, used for H/w msg type: 0xFD
+                    send[3]=0xC3;
+                    send[4]=0xA0;//CMD type, 0xA0:SET, 0xA1:GET, 0xA2:ACT
+                    send[5]=0xA0;//CMD,e,g: SetSysMod:0xEC
+                    send[6]=0x01; // 0x01:Cycling
+                    send[7]=0x01;//(0x01)in HEX==1 in Decimal
+                    send[8]=[self decimalIntoHex:[[NSDate date] timeIntervalSince1970]];// Get Sencond in since, convert ot HEX
+                    send[9] =0x00;
+                    send[10] =0x00;
+                    send[11] =0x00;
+                    send[12] =0x00;
+                    send[13] =0x00;
+                    send[14] =0x00;
+                    send[15] =0;
+                    
+                    NSData *data1 =[NSData dataWithBytes:send length:16];
+                    for(int i=0;i<15;i++)
+                    {
+                        send[15] +=send[i];
+                    }
+                    send[15] =send[15] & 0xFF;
+
+                    [yp disconnect];
 //                     for (YMSCBService *service in yservices) {
 //                         __weak YMSCBService *thisService = (YMSCBService *)service;
 //                         
